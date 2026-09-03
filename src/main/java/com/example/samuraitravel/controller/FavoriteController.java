@@ -74,3 +74,4 @@ public class FavoriteController {
         return "redirect:/houses/" + houseId;
     }
 }
+
