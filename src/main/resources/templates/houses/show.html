@@ -31,17 +31,19 @@
 
                         <!-- お気に入りボタン（ログイン時のみ表示） -->
                         <div sec:authorize="isAuthenticated()" class="text-end mb-2">
-                            <!-- 解除リンク（登録済みの場合） -->
-                            <a th:if="${isFavorite}" href="javascript:void(0)" 
-                               onclick="document.getElementById('favorite-delete-form').submit();">&#9829; お気に入り解除</a>
-                            <form id="favorite-delete-form" class="d-none" method="post" 
-                                  th:action="@{/houses/__${house.getId()}__/favorites/__${favorite.getId()}__/delete}"></form>
+                            <!-- 登録済みの場合（解除リンクとフォーム） -->
+                            <div th:if="${isFavorite}">
+                                <a href="javascript:void(0)" onclick="document.getElementById('favorite-delete-form').submit();">&#9829; お気に入り解除</a>
+                                <form id="favorite-delete-form" class="d-none" method="post" 
+                                      th:action="@{/houses/__${house.getId()}__/favorites/__${favorite.getId()}__/delete}"></form>
+                            </div>
 
-                            <!-- 追加リンク（未登録の場合） -->
-                            <a th:unless="${isFavorite}" href="javascript:void(0)" 
-                               onclick="document.getElementById('favorite-create-form').submit();">&#9825; お気に入り追加</a>
-                            <form id="favorite-create-form" class="d-none" method="post" 
-                                  th:action="@{/houses/__${house.getId()}__/favorites/create}"></form>
+                            <!-- 未登録の場合（追加リンクとフォーム） -->
+                            <div th:unless="${isFavorite}">
+                                <a href="javascript:void(0)" onclick="document.getElementById('favorite-create-form').submit();">&#9825; お気に入り追加</a>
+                                <form id="favorite-create-form" class="d-none" method="post" 
+                                      th:action="@{/houses/__${house.getId()}__/favorites/create}"></form>
+                            </div>
                         </div>
                         
                         <h1 class="mb-4 text-center" th:text="${house.getName()}"></h1>

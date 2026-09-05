@@ -33,6 +33,43 @@
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <h5 class="card-title mb-0" th:text="${review.getUser().getName()}"></h5>
+
+                                            <!-- ログイン中の投稿者本人にのみ編集・削除を表示 -->
+                                            <div sec:authorize="isAuthenticated()"
+                                                th:if="${#authentication.principal.user.id == review.getUser().getId()}">
+                                                <a th:href="@{/houses/__${house.getId()}__/review/__${review.getId()}__/edit}"
+                                                    class="me-2">編集</a>
+                                                <a href="#" class="samuraitravel-link-danger"
+                                                    data-bs-toggle="modal"
+                                                    th:data-bs-target="${'#deleteReviewModal' + review.getId()}">削除</a>
+
+                                                <!-- 削除用モーダル -->
+                                                <div class="modal fade"
+                                                    th:id="${'deleteReviewModal' + review.getId()}"
+                                                    tabindex="-1"
+                                                    th:aria-labelledby="${'deleteReviewModalLabel' + review.getId()}">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title"
+                                                                    th:id="${'deleteReviewModalLabel' + review.getId()}"
+                                                                    th:text="${house.getName() + 'のレビューを削除してもよろしいですか？'}">
+                                                                </h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal"
+                                                                    aria-label="閉じる"></button>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <form method="post"
+                                                                    th:action="@{/houses/__${house.getId()}__/review/__${review.getId()}__/delete}">
+                                                                    <button type="submit"
+                                                                        class="btn samuraitravel-btn-danger text-white shadow-sm">削除</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <p class="card-text mb-1">
                                             <span class="text-warning">
